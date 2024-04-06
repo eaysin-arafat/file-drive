@@ -27,11 +27,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Doc } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, TrashIcon } from "lucide-react";
+import { ImageIcon, MoreVertical, TrashIcon, TypeIcon } from "lucide-react";
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 export const FileCardActions = ({ file }: { file: Doc<"files"> }) => {
   const deleteFile = useMutation(api.files.deleteFile);
@@ -87,17 +88,27 @@ export const FileCardActions = ({ file }: { file: Doc<"files"> }) => {
 };
 
 export const FileCard = ({ file }: { file: Doc<"files"> }) => {
+  const typesIcons = {
+    image: <ImageIcon />,
+    pdf: <ImageIcon />,
+    csv: <ImageIcon />,
+  } as Record<Doc<"files">["type"], React.ReactNode>;
+
   return (
     <Card>
       <CardHeader className="relative">
-        <CardTitle>{file.name}</CardTitle>
-        <div className="absolute top-2 right-2">
+        <CardTitle className="flex gap-2">
+          <p>{typesIcons[file.type]}</p> {file.name}
+        </CardTitle>
+        <div className="absolute top-[19px] right-2">
           <FileCardActions file={file} />
         </div>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        {file.type === "image" && (
+          <Image alt={file.name} width="200" height="200" />
+        )}
       </CardContent>
       <CardFooter>
         <Button>Download</Button>

@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <div className="border-b py-4 bg-gray-50">
       <div className="flex items-center container mx-auto justify-between">
-        <h1>FileDrive</h1>
+        <h1 className="text-2xl font-semibold">FileDrive</h1>
 
         <div className="flex gap-3">
           <OrganizationSwitcher />
