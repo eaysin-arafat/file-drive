@@ -43,6 +43,7 @@ export const UploadButton = () => {
   const user = useUser();
   const { toast } = useToast();
   const generatedUploadUrl = useMutation(api.files.generateUploadUrl);
+  const createFile = useMutation(api.files.createFile);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,17 +70,20 @@ export const UploadButton = () => {
 
     const types = {
       "image/png": "image",
+      "image/jpeg": "image",
       "application/pdf": "pdf",
       "text/csv": "csv",
     } as Record<string, Doc<"files">["type"]>;
 
+    const payload = {
+      name: values.title,
+      fileId: storageId,
+      orgId,
+      type: types[fileType],
+    };
+
     try {
-      await createFile({
-        name: values.title,
-        fileId: storageId,
-        orgId,
-        type: types[fileTypes],
-      });
+      await createFile(payload);
 
       form.reset();
       setIsFileDialogOpen(false);
@@ -102,8 +106,6 @@ export const UploadButton = () => {
   if (organization.isLoaded && user.isLoaded) {
     orgId = organization.organization?.id ?? user.user?.id;
   }
-
-  const createFile = useMutation(api.files.createFile);
 
   return (
     <Dialog
@@ -130,7 +132,7 @@ export const UploadButton = () => {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel className="flex items-start">Title</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter your file title" {...field} />
                       </FormControl>
@@ -144,7 +146,7 @@ export const UploadButton = () => {
                   name="file"
                   render={() => (
                     <FormItem>
-                      <FormLabel>File</FormLabel>
+                      <FormLabel className="flex items-start">File</FormLabel>
                       <FormControl>
                         <Input
                           type="file"

@@ -25,7 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Doc } from "../../convex/_generated/dataModel";
+import { Doc, Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, MoreVertical, TrashIcon, TypeIcon } from "lucide-react";
 import { useState } from "react";
@@ -87,12 +87,17 @@ export const FileCardActions = ({ file }: { file: Doc<"files"> }) => {
   );
 };
 
+const getFileUrl = (fileId: Id<"_storage">) => {
+  return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
+};
 export const FileCard = ({ file }: { file: Doc<"files"> }) => {
   const typesIcons = {
     image: <ImageIcon />,
     pdf: <ImageIcon />,
     csv: <ImageIcon />,
   } as Record<Doc<"files">["type"], React.ReactNode>;
+  console.log("getFileUrl(file.fileId)", getFileUrl(file.fileId));
+  console.log("file.type", file.type);
 
   return (
     <Card>
@@ -107,7 +112,12 @@ export const FileCard = ({ file }: { file: Doc<"files"> }) => {
       </CardHeader>
       <CardContent>
         {file.type === "image" && (
-          <Image alt={file.name} width="200" height="200" />
+          <Image
+            alt={file.name}
+            width="200"
+            height="100"
+            src={getFileUrl(file.fileId)}
+          />
         )}
       </CardContent>
       <CardFooter>
