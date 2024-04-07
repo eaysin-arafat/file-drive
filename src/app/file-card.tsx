@@ -33,6 +33,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
+import {fileTypes} from "../../convex/schema";
 
 export const FileCardActions = ({ file }: { file: Doc<"files"> }) => {
   const deleteFile = useMutation(api.files.deleteFile);
@@ -108,20 +109,24 @@ export const FileCard = ({ file }: { file: Doc<"files"> }) => {
         <div className="absolute top-[19px] right-2">
           <FileCardActions file={file} />
         </div>
-        {/* <CardDescription>Card Description</CardDescription> */}
+        {/* <CardDescriptioTailwind CSS Autocompleten>Card Description</CardDescription> */}
       </CardHeader>
-      <CardContent>
+      <CardContent className="h-[200px] flex justify-center items-center">
         {file.type === "image" && (
-          <Image
+         <Image
+            src={getFileUrl(file.fileId)}
             alt={file.name}
             width="200"
             height="100"
-            src={getFileUrl(file.fileId)}
-          />
+         />
         )}
+
+        {file.type === "csv" && <ImageIcon className="w-20 h-20" />}
+        {file.type === "pdf" && <ImageIcon className="w-20 h-20" />}
+
       </CardContent>
-      <CardFooter>
-        <Button>Download</Button>
+      <CardFooter className="flex justify-center">
+        <Button onClick={() => window.open(getFileUrl(file.fileId), "_blank")}>Download</Button>
       </CardFooter>
     </Card>
   );
