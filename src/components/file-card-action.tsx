@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, StarHalf, StarIcon, TrashIcon } from "lucide-react";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
+import { Protect } from "@clerk/nextjs";
 
 export const FileCardActions = ({
   file,
@@ -86,14 +87,15 @@ export const FileCardActions = ({
             Favourite
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            onClick={() => setIsConfirmOpen(true)}
-            className="flex items-center gap-1 text-red-700 cursor-pointer"
-          >
-            <TrashIcon className="w-4 h-4" /> Delete
-          </DropdownMenuItem>
+          <Protect role="org:admin" fallback={<></>}>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => setIsConfirmOpen(true)}
+              className="flex items-center gap-1 text-red-700 cursor-pointer"
+            >
+              <TrashIcon className="w-4 h-4" /> Delete
+            </DropdownMenuItem>
+          </Protect>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
