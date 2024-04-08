@@ -13,6 +13,10 @@ import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { getFileUrl } from "@/utility/get-file-url";
 import { FileCardActions } from "@/components/file-card-action";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { format, formatDistance, formatRelative, subDays } from "date-fns";
 
 export const FileCard = ({
   file,
@@ -21,6 +25,10 @@ export const FileCard = ({
   file: Doc<"files">;
   favorites: Doc<"favourite">[];
 }) => {
+  const userProfile = useQuery(api.users.getUserProfile, {
+    userId: file.usrId,
+  });
+
   const typesIcons = {
     image: <ImageIcon />,
     pdf: <ImageIcon />,
@@ -34,7 +42,7 @@ export const FileCard = ({
   return (
     <Card>
       <CardHeader className="relative">
-        <CardTitle className="flex gap-2">
+        <CardTitle className="flex gap-2 text-base font-normal">
           <p>{typesIcons[file.type]}</p> {file.name}
         </CardTitle>
         <div className="absolute top-[19px] right-2">
@@ -54,10 +62,18 @@ export const FileCard = ({
         {file.type === "csv" && <ImageIcon className="w-20 h-20" />}
         {file.type === "pdf" && <ImageIcon className="w-20 h-20" />}
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <Button onClick={() => window.open(getFileUrl(file.fileId), "_blank")}>
-          Download
-        </Button>
+      <CardFooter className="flex justify-between gap-2 text-xs">
+        <div className="flex gap-1 items-center text-gray-800">
+          <Avatar className="w-6 h-6 text-xs">
+            <AvatarImage src={userProfile?.image} />
+            <AvatarFallback>{userProfile?.name}</AvatarFallback>
+          </Avatar>
+          {userProfile?.name}
+        </div>
+
+        <p className="text-xs text-gray-600">
+          Uplodad on {formatRelative(new Date(file._creationTime), new Date())}
+        </p>
       </CardFooter>
     </Card>
   );
