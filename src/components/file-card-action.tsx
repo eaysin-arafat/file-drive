@@ -42,6 +42,7 @@ export const FileCardActions = ({
 
   const deleteFile = useMutation(api.files.deleteFile);
   const restoreFile = useMutation(api.files.restoreFile);
+  const me = useQuery(api.users.getMe);
   const toggleFavourite = useMutation(api.files.toggleFavourite);
   const { toast } = useToast();
 
@@ -106,7 +107,16 @@ export const FileCardActions = ({
             </div>
           </DropdownMenuItem>
 
-          <Protect role="org:admin" fallback={<></>}>
+          <Protect
+            condition={(check) => {
+              return (
+                check({
+                  role: "org:admin",
+                }) || file.usrId === me?._id
+              );
+            }}
+            fallback={<></>}
+          >
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {

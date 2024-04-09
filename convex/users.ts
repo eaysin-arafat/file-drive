@@ -6,6 +6,7 @@ import {
   QueryCtx,
 } from "./_generated/server";
 import { roles } from "./schema";
+import { Doc } from "./_generated/dataModel";
 
 export const getUser = async (
   ctx: QueryCtx | MutationCtx,
@@ -73,7 +74,6 @@ export const updateRoleInOrgForUser = internalMutation({
   args: { tokenIdentifier: v.string(), orgId: v.string(), role: roles },
   async handler(ctx, args) {
     const user = await getUser(ctx, args.tokenIdentifier);
-    console.log("user", user);
 
     const org = user.orgIds.find((org) => org.orgId === args.orgId);
 
@@ -100,5 +100,20 @@ export const getUserProfile = query({
       name: user?.name,
       image: user?.image,
     };
+  },
+});
+
+export const getMe = query({
+  args: {},
+  async handler(ctx: QueryCtx | MutationCtx) {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) return null;
+
+    const user = await getUser(ctx, identity.tokenIdentifier);
+
+    if (!user) return null;
+
+    return user;
   },
 });
