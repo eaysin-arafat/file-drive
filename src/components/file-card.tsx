@@ -16,14 +16,12 @@ import { FileCardActions } from "@/components/file-card-action";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { format, formatDistance, formatRelative, subDays } from "date-fns";
+import { formatRelative } from "date-fns";
 
 export const FileCard = ({
   file,
-  favorites,
 }: {
-  file: Doc<"files">;
-  favorites: Doc<"favourite">[];
+  file: Doc<"files"> & { isFvaorited: boolean };
 }) => {
   const userProfile = useQuery(api.users.getUserProfile, {
     userId: file.usrId,
@@ -35,10 +33,6 @@ export const FileCard = ({
     csv: <ImageIcon />,
   } as Record<Doc<"files">["type"], React.ReactNode>;
 
-  const isFavorited = favorites.some(
-    (favourite) => favourite.fileId === file._id
-  );
-
   return (
     <Card>
       <CardHeader className="relative">
@@ -46,7 +40,7 @@ export const FileCard = ({
           <p>{typesIcons[file.type]}</p> {file.name}
         </CardTitle>
         <div className="absolute top-[19px] right-2">
-          <FileCardActions isFavorited={isFavorited} file={file} />
+          <FileCardActions isFavorited={file.isFvaorited} file={file} />
         </div>
       </CardHeader>
       <CardContent className="h-[100px] flex justify-center items-center">
