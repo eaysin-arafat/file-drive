@@ -7,8 +7,8 @@ import ConvexClientProvider from './ConvexClientProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'File Drive',
+  description: 'The easiest way to upload and share files with your company.'
 };
 
 const lato = Lato({
