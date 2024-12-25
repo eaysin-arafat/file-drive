@@ -94,7 +94,7 @@ yarn dev
 
 You can now access the application at http://localhost:3000.
 
-#### Directory Structure
+### Directory Structure
 
 ```
 +-- .github
@@ -145,7 +145,7 @@ You can now access the application at http://localhost:3000.
 +-- yarn.lock
 ```
 
-#### Contributing
+### Contributing
 
 If you’d like to contribute to **FileDrive**, feel free to fork the repository and submit pull requests. Here are some areas you could help with:
 
@@ -160,11 +160,11 @@ npm run lint
 npm run format
 ```
 
-#### License
+### License
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
 
-#### Links
+### Links
 
 [GitHub Repository](https://github.com/eaysin-arafat/file-drive 'GitHub Repository')
 [FileDrive Live Link](https://file-drive-pearl-gamma.vercel.app/ 'FileDrive Live Link')
