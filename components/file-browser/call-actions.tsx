@@ -31,10 +31,12 @@ import { FileType } from '.';
 
 export const CellAction = ({
   file,
-  fileType
+  fileType,
+  isFavorite
 }: {
   file: Doc<'files'>;
   fileType: FileType;
+  isFavorite: boolean;
 }) => {
   const {
     isConfirmOpen,
@@ -47,7 +49,6 @@ export const CellAction = ({
   } = useFileActions(file, fileType);
 
   const isTrash = fileType === 'TRASH';
-  const isFavorite = fileType === 'FAVORITE';
 
   return (
     <>

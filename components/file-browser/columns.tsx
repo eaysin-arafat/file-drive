@@ -35,7 +35,13 @@ export const columns = (fileType: FileType): ColumnType => {
     },
     {
       id: 'actions',
-      cell: ({ row }) => <CellAction fileType={fileType} file={row.original} />
+      cell: ({ row }) => (
+        <CellAction
+          fileType={fileType}
+          file={row.original}
+          isFavorite={row?.original?.isFavorite}
+        />
+      )
     }
   ];
 };

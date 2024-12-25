@@ -75,7 +75,7 @@ export default function FileBrowser({
             <DataTable
               columns={columns(fileType)}
               data={modifiedFiles}
-              isAllFile={fileType === 'ALLFILES'}
+              fileType={fileType}
             />
           )}
         </div>
